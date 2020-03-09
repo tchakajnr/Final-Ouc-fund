@@ -8,7 +8,7 @@
                 </div>
                 <div class="text-center signout pb-10">
                     <router-link to="/">
-                        <v-btn @click="refresh()" rounded color="white--text primary">LogIn</v-btn>
+                        <v-btn @click="refresh()" rounded color="white--text primary">Refresh</v-btn>
                     </router-link>
                 </div>
             </v-card>
@@ -25,6 +25,7 @@ export default {
      methods:{
          refresh(){
              this.$store.state.status = null;
+             localStorage.clear();
          }
      }
 };

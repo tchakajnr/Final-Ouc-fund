@@ -3,7 +3,7 @@
   <div v-if="!status || status ===0 || status===401 || status===200 ">
     <div v-if="!status || status ===0">
   <h1>{{errorStatement}}</h1>
-  <h3 class="warning">{{head}}</h3>
+  <h3 v-if="token" class="warning">{{head}}</h3>
   <h5 class="danger">check your network connection and click the button below!!!</h5>
   <v-progress-linear
       color="red lighten-2"
@@ -11,7 +11,7 @@
       stream
     ></v-progress-linear> <br/>
     <router-link to="/">
-          <v-btn @click="refresh()" rounded color="white--text primary">Login Again</v-btn>
+          <v-btn @click="refresh()" rounded color="white--text primary">Login</v-btn>
     </router-link>
 
   </div>
@@ -80,7 +80,7 @@
     </v-expand-transition>
   </v-card>
   </div>
-  <div v-else>
+  <div v-if="loading">
     <h1>Loading....</h1>
   </div>
 </div>
@@ -91,7 +91,24 @@ import Subscriptions from "./Subscriptions";
 import Error from "../Error";
  import {mapState} from 'vuex';
   export default {
+    beforeCreate(){
+      this.loading = true;
+    },
+    created(){
+    this.loading = true;
+    },
+    beforeMount(){
+      this.loading = true;
+      const student = JSON.parse(localStorage.getItem('student'));
+      this.$store.state.student = student;
+
+    },
     mounted(){
+  this.loading = false;
+  const token = localStorage.getItem('token');
+  if(token){
+    
+  }
    const student = JSON.parse(localStorage.getItem('student'));
    this.$store.state.student = student;
    if(student){
@@ -122,6 +139,7 @@ import Error from "../Error";
   },
     data: () => ({
       show: false,
+      loading: false
     }),
     methods:{
       exiting(){

@@ -9,7 +9,7 @@
   >
   <div class="text-center err">
   <h1>{{errorStatement}}</h1>
-  <h3 class="warning ">{{head}}</h3>
+  <h3 v-if="token" class="warning ">{{head}}</h3>
   <h5 class="red--text">Check your network connection !!!</h5>
   <v-progress-linear
       color="red lighten-2"

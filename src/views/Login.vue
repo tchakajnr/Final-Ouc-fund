@@ -185,7 +185,7 @@ return resp.json();
         
       })
       .then(respData=>{
-        // console.log(respData);
+        console.log(respData);
         if(respData.status === 'passwordError' || respData.status=== 0){
           this.$store.state.status = 401;
          
@@ -219,7 +219,7 @@ return resp.json();
         // this.loadDetails;
       })
       .catch(err => {
-        console.log(err);
+        console.log(`err obj ${err}`);
         this.$store.state.status = 0;
         // this.$store.state.isAuth = false;
         
