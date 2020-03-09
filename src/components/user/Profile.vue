@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import openSocket from 'socket.io-client';
 import Subscriptions from "./Subscriptions";
 import Error from "../Error";
  import {mapState} from 'vuex';
@@ -105,15 +106,21 @@ import Error from "../Error";
     },
     mounted(){
   this.loading = false;
-  const token = localStorage.getItem('token');
-  if(token){
-    
-  }
+  const studentNumber = localStorage.getItem('studentNum');
+  
    const student = JSON.parse(localStorage.getItem('student'));
    this.$store.state.student = student;
    if(student){
      this.$store.state.status = 200;
    }
+    const socket = openSocket('https://fundapi.herokuapp.com');
+    socket.on('addition',data=>{
+      if(data.action === 'payment'){
+        this.search(studentNumber);
+      }
+    })
+
+
    setTimeout(()=>{
      this.$store.state.errorStatement = '';
      this.$store.state.head='OOPS! SOMETHING WENT WRONG.'
@@ -142,6 +149,39 @@ import Error from "../Error";
       loading: false
     }),
     methods:{
+      search(studentID){
+        fetch(`https://fundapi.herokuapp.com/v1/student/${studentID}`, {
+      headers: {
+        Authorization: 'Bearer ' + this.$store.state.token
+      }
+    })
+    .then(res => {
+          return res.json();
+        })
+        .then(([data]) => {
+          localStorage.setItem('student', JSON.stringify(data));
+           console.log( `Iam running every 3sec`);
+          this.$store.state.student = data;
+          this.$store.state.payment = data.payment;
+          if (data.payment === 0) {
+            this.$store.state.time =
+              "According to records you are not part of the fund contact secretary for details";
+
+          } else {
+            this.$store.state.isMember = true;
+            const month = Math.floor((this.payment) / 30);
+            if (month === 1) {
+              this.$store.state.time = `You have paid your subscriptions for only 1 month`;
+            } else {
+            
+              this.$store.state.time= `You have paid your subscriptions for ${Math.floor(this.$store.state.payment /
+                30)} months`;
+            }
+          }
+          
+        });
+
+      },
       exiting(){
       localStorage.removeItem('studentNum');
       this.$store.state.token = null;
