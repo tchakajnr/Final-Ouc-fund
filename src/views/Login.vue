@@ -26,6 +26,9 @@
                                                     color="primary"
                                                     v-model="studentNumber"
                                                     value="studentNumber"
+
+                                                    :rules="rules" 
+                                                    
                                                     
                                                />
                                                 <v-text-field
@@ -37,6 +40,7 @@
                                                     name="password"
                                                     value="pwd"
                                                     v-model="pwd"
+                                                     
                                                />
                                             </v-form>
                                             <h4 class="text-center mt-3" @click="step++">Sign in as Admin</h4>
@@ -67,6 +71,8 @@
                                                     color="primary"
                                                     v-model="adminId"
                                                     value="adminId"
+
+                                                     :rules="rules" 
                                                />
                                                 <v-text-field
                                                     label="ADMIN KEY"
@@ -77,6 +83,7 @@
                                                     name="adminKey"
                                                     value="adminKey"
                                                     v-model="adminKey"
+                                                     
                                                />
                                             </v-form>
                                             <h3 class="text-center mt-3" @click="step--">Sign in as User</h3>
@@ -123,6 +130,9 @@ export default {
   },
   data() {
     return {
+      rules: [
+         v => !!v || 'Required'
+    ],
          step:1,
     props:{
         source:String

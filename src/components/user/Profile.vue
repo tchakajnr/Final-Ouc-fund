@@ -38,7 +38,9 @@
       <h5 v-if="student.payment===0"><a>Only active member can view more details about the fund, your name does not exist in OUC_ZIM fund system</a></h5>
       <h4 v-if="student.payment > 0" class="pt-2">Your total Subscriptions Balance is  ¥{{student.payment}}</h4>
       <!-- <h3 v-if="student.payment > 0" class="pt-2">Current total fund balance is ¥{{student.payment}}</h3> -->
-      <h4 v-if="student.payment > 0" class="pt-2"><a>Month(s) Subscribed: </a>{{student.payment/30}}<a v-if="student.payment===1"> month</a>  <a v-else> months</a> only</h4>
+      <h4 v-if="student.payment > 100" class="pt-2"><a>Month(s) Subscribed: </a>{{(((student.payment) -100)/30)+1}}<a v-if="student.payment===100"> month</a>  <a v-else> months</a> only</h4>
+      <h4 v-else-if="student.payment === 100" class="pt-2"><a>Month(s) Subscribed: </a>{{(((student.payment) -100)/30)+1}}<a v-if="student.payment===1"> month</a>  <a v-else> months</a> only</h4>
+      <h4 v-else-if="student.payment < 100 && student.payment" class="pt-2"><a>Month(s) Subscribed: </a>{{(student.payment)/30}}<a v-if="student.payment===1"> month</a>  <a v-else> months</a> only</h4>
 
 
       <h3 class="pt-2"><a>Contact Secretary for more Details</a></h3>
