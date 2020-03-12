@@ -72,11 +72,11 @@
       </thead>
        <tbody>
           <tr v-for="student in students" :key="student.major">
-            <td>{{ student.firstName }}</td>
+            <td v-if="!student.adminId">{{ student.firstName }}</td>
             <!-- <td>{{student.lastName}}</td> -->
-            <td>{{ student.studentID }}</td>
+            <td v-if="!student.adminId">{{ student.studentID }}</td>
             <!-- <td>{{student.major}}</td> -->
-            <td>{{ student.payment }}</td>
+            <td v-if="!student.adminId">{{ student.payment }}</td>
             <td>
    
     <v-expansion-panels>
