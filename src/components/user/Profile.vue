@@ -177,7 +177,7 @@ import Error from "../Error";
             } else {
             
               this.$store.state.time= `You have paid your subscriptions for ${Math.floor(this.$store.state.payment /
-                30)} months`;
+                30)} months` ;
             }
           }
           
