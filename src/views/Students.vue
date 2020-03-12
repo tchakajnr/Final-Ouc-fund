@@ -76,7 +76,7 @@
             <!-- <td>{{student.lastName}}</td> -->
             <td>{{ student.studentID }}</td>
             <!-- <td>{{student.major}}</td> -->
-            <td>{{ student.payment }}</td>
+            <td v-if="!student.adminId">{{ student.payment }}</td>
             <td>
    
     <v-expansion-panels>
