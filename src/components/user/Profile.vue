@@ -42,7 +42,7 @@
       <h4 v-else-if="student.payment === 100" class="pt-2"><a>Month(s) Subscribed: </a>{{(((student.payment) -100)/30)+1}}<a v-if="student.payment===1"> month</a>  <a v-else> months</a> only</h4>
       <h4 v-else-if="student.payment < 100 && student.payment" class="pt-2"><a>Month(s) Subscribed: </a>{{(student.payment)/30}}<a v-if="student.payment===1"> month</a>  <a v-else> months</a> only</h4>
 
-
+        <h3 v-if="student.payment > 30">Total subscriptions: <span class="red--text">¥{{total}}.00</span></h3>
       <h3 class="pt-2"><a>Contact Secretary for more Details</a></h3>
       
     </v-card-subtitle>
@@ -92,7 +92,7 @@
 import openSocket from 'socket.io-client';
 import Subscriptions from "./Subscriptions";
 import Error from "../Error";
- import {mapState} from 'vuex';
+ import {mapState, mapActions} from 'vuex';
   export default {
     beforeCreate(){
       this.loading = true;
@@ -107,6 +107,9 @@ import Error from "../Error";
 
     },
     mounted(){
+  this.getsTotal();
+  const total = localStorage.getItem('total');
+  this.$store.state.total = total;
   this.loading = false;
   const studentNumber = localStorage.getItem('studentNum');
   
@@ -119,6 +122,7 @@ import Error from "../Error";
     socket.on('addition',data=>{
       if(data.action === 'payment'){
         this.search(studentNumber);
+        this.getsTotal();
       }
     })
 
@@ -133,6 +137,9 @@ import Error from "../Error";
     Error
      },
        computed:{
+    ...mapActions([
+      'getTotal'
+    ]),
     ...mapState([
       'status',
       'student',
@@ -143,7 +150,8 @@ import Error from "../Error";
       'nameError',
       'studentNumber',
       'errorStatement',
-      'head'
+      'head',
+      'total'
     ])
   },
     data: () => ({
@@ -151,7 +159,25 @@ import Error from "../Error";
       loading: false
     }),
     methods:{
+      getsTotal(){
+        fetch(`https://fundapi.herokuapp.com/v1/total`)
+        .then(resp=>{
+          /* eslint-disable */
+          return resp.json();
+          
+        })
+        .then(({balance})=>{
+          console.log(balance);
+          localStorage.setItem('total',balance);
+          this.$store.state.total = balance;
+        })
+        .catch(err=>{
+          console.log(err);
+          
+        })
+      },
       search(studentID){
+
         fetch(`https://fundapi.herokuapp.com/v1/student/${studentID}`, {
       headers: {
         Authorization: 'Bearer ' + this.$store.state.token
@@ -162,7 +188,6 @@ import Error from "../Error";
         })
         .then(([data]) => {
           localStorage.setItem('student', JSON.stringify(data));
-           console.log( `Iam running every 3sec`);
           this.$store.state.student = data;
           this.$store.state.payment = data.payment;
           if (data.payment === 0) {

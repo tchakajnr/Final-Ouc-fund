@@ -181,7 +181,7 @@ export default {
    setTimeout(()=>{
      this.$store.state.errorStatement = '';
      this.$store.state.head='OOPS! SOMETHING WENT WRONG.'
-   },5000);
+   },8000);
    const socket = openSocket('https://fundapi.herokuapp.com');
     socket.on('addition',data=>{
       if(data.action === 'payment'){
@@ -213,12 +213,7 @@ export default {
       this.$store.state.isAuth = false;
       this.$store.state.studentNumber = 'BK';
       localStorage.clear();
-      // localStorage.removeItem('token');
-      // localStorage.removeItem('expiryDate');
-      // localStorage.removeItem('userId');
-      // localStorage.removeItem('studentNum');
       this.$store.state.student = null;
-      // console.log(`exiting token now ${this.$store.state.token}`);
       
     },
     refresh(){
@@ -244,6 +239,7 @@ export default {
                     
                     let students=[];
                     students = studentsRecieved;
+                    localStorage.setItem('students', JSON.stringify(students));
                     this.$store.state.students = students;
                     // commit('SET_STUDENTS',students);
                     

@@ -115,7 +115,8 @@ export default {
     components: { Footer},
     computed:{
     ...mapActions([
-      'loadDetails'
+      'loadDetails',
+      'getTotal'
     ]),
     ...mapState([
       'status',
@@ -125,7 +126,8 @@ export default {
       'wrongDetails',
       'notExist',
       'nameError',
-      'studentNumber'
+      'studentNumber',
+      'total'
     ])
   },
   data() {
@@ -195,7 +197,6 @@ return resp.json();
         
       })
       .then(respData=>{
-        console.log(respData);
         if(respData.status === 'passwordError' || respData.status=== 0){
           this.$store.state.status = 401;
          
@@ -218,7 +219,7 @@ return resp.json();
         );
         localStorage.setItem('expiryDate', expiryDate.toISOString());
         this.setAutoLogout(remainingMilliseconds);
-        // console.log(expiryDate);
+        console.log(expiryDate);
         // console.log(this.$store.state.token);
         return respData.token;
           
@@ -238,7 +239,7 @@ return resp.json();
       
       },
     adminLog(){
-      console.log(`${this.adminId} and    ${this.adminKey}`);
+      // console.log(`${this.adminId} and    ${this.adminKey}`);
       /* eslint-disable */
       this.$http.post("https://fundapi.herokuapp.com/v1/admin/",{
           adminId:this.adminId,
@@ -312,7 +313,7 @@ return resp.json();
         })
         .then(([data]) => {
           localStorage.setItem('student', JSON.stringify(data));
-           console.log( `Iam running every 3sec`);
+          this.getTotal;
           this.$store.state.student = data;
           this.$store.state.payment = data.payment;
           if (data.payment === 0) {

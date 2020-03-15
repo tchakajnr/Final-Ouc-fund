@@ -23,13 +23,34 @@ Vue.use(Vuex);
         errorStatement:'Loading....',
         head:'',
         adminToken:'',
-        secretId:''
+        secretId:'',
+        total:''
          
         
 
         
     },
     actions:{
+      getTotal({commit}){
+        fetch(`https://fundapi.herokuapp.com/v1/total`)
+        .then(resp=>{
+          /* eslint-disable */
+          return resp.json();
+          
+        })
+        .then(({balance})=>{
+          console.log(balance);
+          
+          commit('SET_TOTAL',balance);
+          localStorage.setItem('total',balance);
+    
+        })
+        .catch(err=>{
+          console.log(err);
+          
+        })
+        }
+      ,
         loadDetails({commit}){
             fetch('https://fundapi.herokuapp.com/v1/payments/'
             ,{
@@ -52,18 +73,28 @@ Vue.use(Vuex);
                     
                     let students=[];
                     students = studentsRecieved;
+                    this.getTotal;
                     localStorage.setItem('students', JSON.stringify(students));
                     console.log( `Iam running from store`);
                     commit('SET_STUDENTS',students);
+                    commit('SET_STATUS',200);
+                  }).catch(err=>{
+                    console.log(err);
                     
-                
                   }); 
         },
 
     },
     mutations:{
         SET_STUDENTS(state,students){
-            state.students = students
+            state.students = students;
+        },
+        SET_TOTAL(state,total){
+          state.total = total;
+
+        },
+        SET_STATUS(state,status){
+          state.status = status;
         }
 
     }
