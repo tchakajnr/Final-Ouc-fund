@@ -96,7 +96,7 @@
       </v-col>
       <v-col cols="12" sm="3">
         <v-btn class="mx-2" fab dark color="indigo" @click="addBig(student.id)">
-            +120
+            +100
           </v-btn>
       </v-col>
       <v-col cols="12" sm="3" v-if="student.payment>=30">
@@ -104,7 +104,7 @@
             -30
           </v-btn>
       </v-col>
-      <v-col cols="12" sm="3" v-if="student.payment>=120">
+      <v-col cols="12" sm="3" v-if="student.payment>=100">
         <v-btn class="mx-0" fab dark color="indigo" @click="subtractBig(student.id)">
             -120
           </v-btn>
