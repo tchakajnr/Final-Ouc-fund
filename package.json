@@ -21,7 +21,7 @@
     "vue-social-sharing": "^2.4.7",
     "vue-socialmedia-share": "^1.0.1",
     "vue-wechat-share": "^1.0.1",
-    "vuetify": "^2.0.0",
+    "vuetify": "^2.6.10",
     "vuetify-datetime-picker": "^2.0.3",
     "vuex": "^3.1.2"
   },
